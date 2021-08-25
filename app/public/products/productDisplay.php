@@ -1,15 +1,14 @@
 <?php require_once("../../resources/config.php"); ?>
 
 <?php include(TEMPLATE_FRONT . DS . "product-header.php") ?>
-<?php 
-    $product_aisle = htmlspecialchars($_GET["category"]);
-    $product_id =  htmlspecialchars($_GET["id"]);
-    $product_category = ucfirst(explode("_", $product_aisle)[1]);
-    $product_obj = getProductXml($product_aisle, $product_id);
+<?php
+$product_aisle = htmlspecialchars($_GET["category"]);
+$product_id =  htmlspecialchars($_GET["id"]);
+$product_category = ucfirst(explode("_", $product_aisle)[1]);
+$product_obj = getProductXml($product_aisle, $product_id);
 ?>
 
-<body class="d-flex flex-column min-vh-100" onload="loadQty(<?php echo htmlspecialchars($_GET['id']); ?>)"
-    onbeforeunload="saveQty(<?php echo htmlspecialchars($_GET['id']); ?>)">
+<body class="d-flex flex-column min-vh-100" onload="loadQty(<?php echo htmlspecialchars($_GET['id']); ?>)" onbeforeunload="saveQty(<?php echo htmlspecialchars($_GET['id']); ?>)">
     <!-- Navigation bar linking to home and menus -->
     <?php include(TEMPLATE_FRONT . DS . "product-navbar.php") ?>
 
@@ -23,8 +22,7 @@
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="../index.php">Home</a></li>
-                <li class="breadcrumb-item"><a
-                        href="../aisles/<?php echo $product_category; ?>.php"><?php echo $product_category; ?></a></li>
+                <li class="breadcrumb-item"><a href="../aisles/<?php echo strtolower($product_category); ?>.php"><?php echo $product_category; ?></a></li>
                 <li class="breadcrumb-item active" aria-current="page"><?php echo $product_obj->name; ?></li>
             </ol>
         </nav>
@@ -33,8 +31,7 @@
             <div class="row">
                 <!-- Product image -->
                 <div class="col-md-6" id="productImage">
-                    <img src="../uploads/<?php echo $product_obj->image; ?>" class="img-fluid"
-                        alt="Image of <?php echo $product_obj->name; ?>." />
+                    <img src="../uploads/<?php echo $product_obj->image; ?>" class="img-fluid" alt="Image of <?php echo $product_obj->name; ?>." />
                 </div>
 
                 <!-- Product description, pricing, quantity, add to cart button. -->
@@ -46,13 +43,12 @@
                     <form action="<?php echo 'add-to-cart.php?category=' . $product_aisle . '&amp;id=' . $product_id; ?>" method="POST">
                         <!-- Optional Flavour or Cut control -->
                         <?php
-                         if (count($product_obj->options) >= 1) {
-                             getOptions($product_obj->options->children());
-                         }
-                         ?>
+                        if (count($product_obj->options) >= 1) {
+                            getOptions($product_obj->options->children());
+                        }
+                        ?>
                         <div class="form-group w-25">
-                            <input id="quantity" class="form-control form-control-lg" type="number" name="quantity"
-                                min="1" value="1" onchange="calculateSubtotal()" />
+                            <input id="quantity" class="form-control form-control-lg" type="number" name="quantity" min="1" value="1" onchange="calculateSubtotal()" />
                             <label for="quantity">Quantity</label>
                         </div>
                         <h4>Subtotal: &#36;<span id="subtotal"></span></h4>
@@ -61,8 +57,7 @@
                         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addedModal">Add
                             to Cart</button>
                         <!-- Pop up for add to cart -->
-                        <div class="modal fade" id="addedModal" tabindex="-1" aria-labelledby="ProductLabel"
-                            aria-hidden="true">
+                        <div class="modal fade" id="addedModal" tabindex="-1" aria-labelledby="ProductLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content text-center">
                                     <div class="modal-header">
@@ -76,10 +71,8 @@
                                             cart</p>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-dismiss="modal">Cancel</button>
-                                        <input type="submit" class="btn btn-primary" id="add-cart-btn"
-                                            value="Confirm" />
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                        <input type="submit" class="btn btn-primary" id="add-cart-btn" value="Confirm" />
                                     </div>
                                 </div>
                             </div>
@@ -88,8 +81,8 @@
                     <div id="more-description" style="margin: 10px; display: none;">
                         <p>
                             <?php echo $product_obj->description; ?>
-                            <p style="color: gray; font-size: smaller;">Serial #: <?php echo $product_obj->serial; ?>
-                            </p>
+                        <p style="color: gray; font-size: smaller;">Serial #: <?php echo $product_obj->serial; ?>
+                        </p>
                         </p>
                     </div>
                 </div>
